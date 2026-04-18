@@ -5,16 +5,21 @@ from streamlit_option_menu import option_menu
 from screens.chat import ChatPage
 from screens.uploads import UploadsPage
 
-st.set_page_config(layout="centered")
+st.set_page_config(
+    page_title="Financial Agents",
+    page_icon="resources/assets/cash-coin.svg",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
 
 with st.sidebar:
     selected = option_menu(
-        menu_title="Assistente",  # required
-        options=["Chat", "Uploads", "Planilha", "Dashboard"],  # required
-        icons=["chat-right-text-fill", "file-earmark-arrow-up-fill", "table", "clipboard-data-fill"],  # optional
-        menu_icon=None, #"cast",  # optional
-        default_index=0,  # optional
-        #orientation="horizontal",
+        menu_title="Financial Agents",
+        options=["Chat", "Uploads", "Planilha", "Dashboard"],
+        icons=["chat-right-text-fill", "file-earmark-arrow-up-fill", "table", "clipboard-data-fill"],
+        menu_icon="cash-coin",
+        default_index=0,
+        # orientation="horizontal",
         key="selected",
     )
 
