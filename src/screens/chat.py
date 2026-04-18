@@ -4,6 +4,9 @@ import streamlit as st
 
 
 class ChatPage():
+    def __init__(self):
+        if "messages" not in st.session_state:
+            st.session_state.messages = [{"role": "assistant", "content": "Vamos começar a organizar as finanças! 👇"}]
 
     # função JS de scroll
     @staticmethod
@@ -22,10 +25,7 @@ class ChatPage():
         )
 
     def render(self):
-        if "messages" not in st.session_state:
-            st.session_state.messages = [{"role": "assistant", "content": "Let's start chatting! 👇"}]
-
-        chat_container = st.container(height="stretch", border=False, width=1200)
+        chat_container = st.container(height="stretch", border=False, width="stretch")
 
         with chat_container:
             for msg in st.session_state.messages:
@@ -55,12 +55,10 @@ class ChatPage():
                         placeholder.markdown(full_response)
 
                         if i % (size/3) == 0:
-                            self.auto_scroll()  # 👈 scroll a cada atualização
+                            self.auto_scroll()  #scroll
                         time.sleep(0.05)
 
             # salva resposta final
             st.session_state.messages.append(
                 {"role": "assistant", "content": full_response}
             )
-
-            
