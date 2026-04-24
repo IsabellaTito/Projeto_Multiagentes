@@ -2,11 +2,25 @@ import time
 
 import streamlit as st
 
+from shared.repository.session import ChatRepository
+from shared.storage import get_db
+
 
 class ChatPage():
     def __init__(self):
+        db = get_db()
+        self.chat_repository = ChatRepository(db)
+
+        session_id = self.chat_repository.get_session_by_id(1)
+
+        if session_id is None:
+            session_id = self.chat_repository.create_session()
+        
+        if "session_id" not in st.session_state:
+            st.session_state.session_id = session_id
+
         if "messages" not in st.session_state:
-            st.session_state.messages = [{"role": "assistant", "content": "Vamos começar a organizar as finanças! 👇"}]
+            st.session_state.messages = self.chat_repository.get_messages_as_dict(st.session_state.session_id)
 
     # função JS de scroll
     @staticmethod
@@ -35,7 +49,14 @@ class ChatPage():
         # input
         if prompt := st.chat_input("Digite algo"):
             # adiciona user
-            st.session_state.messages.append({"role": "user", "content": prompt})
+            message = {"role": "user", "content": prompt}
+
+            st.session_state.messages.append(message)
+
+            self.chat_repository.create_message(
+                session_id=st.session_state.session_id, 
+                role=message["role"],
+                content=message["content"])
 
             with chat_container:
                 with st.chat_message("user"):
@@ -59,6 +80,10 @@ class ChatPage():
                         time.sleep(0.05)
 
             # salva resposta final
-            st.session_state.messages.append(
-                {"role": "assistant", "content": full_response}
-            )
+            message = {"role": "assistant", "content": full_response}
+            st.session_state.messages.append(message)
+            self.chat_repository.create_message(
+                session_id=st.session_state.session_id, 
+                role=message["role"],
+                content=message["content"])
+
