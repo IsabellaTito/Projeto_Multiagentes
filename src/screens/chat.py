@@ -2,6 +2,8 @@ import time
 
 import streamlit as st
 
+from agents.chat_agent import ChatAgent
+from shared.enums import LLM_Providers
 from shared.repository.session import ChatRepository
 from shared.storage import get_db
 
@@ -10,6 +12,7 @@ class ChatPage():
     def __init__(self):
         db = get_db()
         self.chat_repository = ChatRepository(db)
+        self.agent = ChatAgent(llm_provider=LLM_Providers.GEMINI)
 
         session_id = self.chat_repository.get_session_by_id(1)
 
@@ -62,6 +65,9 @@ class ChatPage():
                 with st.chat_message("user"):
                     st.write(prompt)
 
+            with st.spinner(text="Digitando..."):
+                agent_reponse = self.agent.agent_call(st.session_state.messages[-10:])
+
             # placeholder da resposta
             with chat_container:
                 with st.chat_message("assistant"):
@@ -70,8 +76,8 @@ class ChatPage():
                     full_response = ""
 
                     # streaming fake
-                    size = len(prompt.split())
-                    for i, word in enumerate(prompt.split()):
+                    size = len(agent_reponse.split())
+                    for i, word in enumerate(agent_reponse.split()):
                         full_response += word + " "
                         placeholder.markdown(full_response)
 
