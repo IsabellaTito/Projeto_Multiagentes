@@ -65,7 +65,7 @@ class ChatPage():
                 with st.chat_message("user"):
                     st.write(prompt)
 
-            with st.spinner(text="Digitando..."):
+            with st.spinner(text="Pensando..."):
                 agent_reponse = self.agent.agent_call(st.session_state.messages[-10:])
 
             # placeholder da resposta
