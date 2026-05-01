@@ -42,7 +42,6 @@ class ChatPage():
         )
 
     def render(self):
-        st.warning(LLM_PROVIDER)
         chat_container = st.container(height="stretch", border=False, width="stretch")
 
         with chat_container:
