@@ -1,13 +1,15 @@
 from langchain.agents import create_agent
 from langchain_core.prompts import load_prompt
 
-from agents.config import get_llm_gemini
+from agents.config import get_llm_gemini, get_llm_openrouter
 from shared.enums import LLM_Providers
 
 class ChatAgent:
     def __init__(self, llm_provider: LLM_Providers, temperatura:float = 0, model:str = "gemini-2.5-flash"):
         if llm_provider == LLM_Providers.GEMINI:
             self.llm = get_llm_gemini(model,temperatura)
+        elif llm_provider == LLM_Providers.OPENROUTER:
+            self.llm = get_llm_openrouter()
         
         prompt = load_prompt("resources/prompts/chat_agent.yaml")
 

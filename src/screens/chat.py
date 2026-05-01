@@ -3,7 +3,7 @@ import time
 import streamlit as st
 
 from agents.chat_agent import ChatAgent
-from shared.enums import LLM_Providers
+from agents.config.settings import LLM_PROVIDER
 from shared.repository.session import ChatRepository
 from shared.storage import get_db
 
@@ -12,7 +12,7 @@ class ChatPage():
     def __init__(self):
         db = get_db()
         self.chat_repository = ChatRepository(db)
-        self.agent = ChatAgent(llm_provider=LLM_Providers.GEMINI)
+        self.agent = ChatAgent(llm_provider=LLM_PROVIDER)
 
         session_id = self.chat_repository.get_session_by_id(1)
 
@@ -51,45 +51,49 @@ class ChatPage():
 
         # input
         if prompt := st.chat_input("Digite algo"):
-            # adiciona user
-            message = {"role": "user", "content": prompt}
+            try:
+                # adiciona user
+                user_message = {"role": "user", "content": prompt}
+                st.session_state.messages.append(user_message)
 
-            st.session_state.messages.append(message)
+                with chat_container:
+                    with st.chat_message("user"):
+                        st.write(prompt)
 
-            self.chat_repository.create_message(
-                session_id=st.session_state.session_id, 
-                role=message["role"],
-                content=message["content"])
+                with st.spinner(text="Pensando..."):
+                    agent_reponse = self.agent.agent_call(st.session_state.messages[-10:])
 
-            with chat_container:
-                with st.chat_message("user"):
-                    st.write(prompt)
+                # placeholder da resposta
+                with chat_container:
+                    with st.chat_message("assistant"):
+                        placeholder = st.empty()
 
-            with st.spinner(text="Pensando..."):
-                agent_reponse = self.agent.agent_call(st.session_state.messages[-10:])
+                        full_response = ""
 
-            # placeholder da resposta
-            with chat_container:
-                with st.chat_message("assistant"):
-                    placeholder = st.empty()
+                        # streaming fake
+                        size = len(agent_reponse.split())
+                        for i, word in enumerate(agent_reponse.split()):
+                            full_response += word + " "
+                            placeholder.markdown(full_response)
 
-                    full_response = ""
+                            if i % (size/3) == 0:
+                                self.auto_scroll()  #scroll
+                            time.sleep(0.05)
 
-                    # streaming fake
-                    size = len(agent_reponse.split())
-                    for i, word in enumerate(agent_reponse.split()):
-                        full_response += word + " "
-                        placeholder.markdown(full_response)
+                # salva resposta final
+                message = {"role": "assistant", "content": full_response}
+                st.session_state.messages.append(message)
 
-                        if i % (size/3) == 0:
-                            self.auto_scroll()  #scroll
-                        time.sleep(0.05)
+                self.chat_repository.create_message(
+                    session_id=st.session_state.session_id, 
+                    role=user_message["role"],
+                    content=user_message["content"])
 
-            # salva resposta final
-            message = {"role": "assistant", "content": full_response}
-            st.session_state.messages.append(message)
-            self.chat_repository.create_message(
-                session_id=st.session_state.session_id, 
-                role=message["role"],
-                content=message["content"])
+                self.chat_repository.create_message(
+                    session_id=st.session_state.session_id, 
+                    role=message["role"],
+                    content=message["content"])
+                
+            except Exception as e:
+                st.error(f"Erro inesperado: {e}")
 

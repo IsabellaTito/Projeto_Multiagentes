@@ -26,6 +26,7 @@ template: |
   - Entenda linguagem natural livre.
   - Não dê explicações longas.
   - Organize a resposta de forma clara.
+  - Frequentemente se refira ao usuário pelo nome, caso o nome não seja informado então pergunte.
 
   EXEMPLOS:
 

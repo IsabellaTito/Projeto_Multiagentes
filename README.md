@@ -1,26 +1,31 @@
-# Projeto Multiagentes
+# Projeto Multiagentes 🤖
 
-Projeto desenvolvido ao longo da disciplina de Sistemas Multiagentes com o objetivo de por em prática os conhecimentos aprendidos sobre **Agentic AI**.
+![Python](https://img.shields.io/badge/python-3.x-blue)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-ORM-red)
+![LangChain](https://img.shields.io/badge/LangChain-Agentic%20AI-green)
+![SQLite](https://img.shields.io/badge/SQLite-Database-lightgrey)
+![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-ff4b4b)
 
-**Título do projeto:** Financial Agents
+Projeto desenvolvido ao longo da disciplina de Sistemas Multiagentes com o objetivo de pôr em prática os conhecimentos aprendidos sobre **Agentic AI**.
 
-O projeto tem como objetivo desenvolver um sistema multiagente que funcione como um assitente financeiro pessoal para registrar e organizar informações de gastos interagindo com o usuário por meio de lingaugem natural.
+**Título do projeto:** Financial Agents 💰
 
-## Release 1 (28/04/2026)
+O projeto tem como objetivo desenvolver um sistema multiagente que funcione como um assistente financeiro pessoal para registrar e organizar informações de gastos, interagindo com o usuário por meio de linguagem natural.
 
-A primeira release do projeto já entrega um `ChatAgent` criado com **LangChain** para interagir diretamente com o usuário. 
-O objetivo deste primeiro agente é receber despesas informadas diretamente pelo usuário, para posteriormente realizar consultas e o próprio sistema multiagente realizar estatísticas acerca do entendimento do padrão de cosumo.
+## Release 1 (28/04/2026) 🚀
 
-Essa primeira release inclue as seguintes features:
-- Protótipo do Frontend com chat para interação com o assitente
-- Estrutura inical do banco de dados para persistir mensagens do assistente e do usuário
-- Agente de chat implementado com LangChain
-- Estrutura para carregar os prompts dos agentes a partir de arquivos `yaml` 
+A primeira release do projeto já entrega um `ChatAgent` criado com **LangChain** para interagir diretamente com o usuário.
 
-## Como rodar?
+O objetivo deste primeiro agente é receber despesas informadas diretamente pelo usuário, para posteriormente realizar consultas e permitir que o próprio sistema multiagente gere estatísticas a partir do entendimento do padrão de consumo.
 
-Inicie o projeto com o comando:
+### Features desta release ✨
 
+- Protótipo de frontend com chat para interação com o assistente  
+- Estrutura inicial do banco de dados para persistência de mensagens do assistente e do usuário  
+- Agente de chat implementado com LangChain  
+- Estrutura para carregamento de prompts dos agentes a partir de arquivos `yaml`  
+
+## Como rodar? ⚙️
 
 Inicie o projeto com o comando:
 ```bash
