@@ -12,18 +12,20 @@ class ChatPage():
     def __init__(self):
         db = get_db()
         self.chat_repository = ChatRepository(db)
-        self.agent = ChatAgent(llm_provider=LLM_PROVIDER)
 
         session_id = self.chat_repository.get_session_by_id(1)
 
         if session_id is None:
-            session_id = self.chat_repository.create_session()
+            chat_session = self.chat_repository.create_session()
+            session_id = chat_session.id
         
         if "session_id" not in st.session_state:
             st.session_state.session_id = session_id
 
         if "messages" not in st.session_state:
             st.session_state.messages = self.chat_repository.get_messages_as_dict(st.session_state.session_id)
+
+        self.agent = ChatAgent(llm_provider=LLM_PROVIDER, session_id=session_id)
 
     # função JS de scroll
     @staticmethod
@@ -72,11 +74,13 @@ class ChatPage():
 
                         # streaming fake
                         size = len(agent_reponse.split())
+                        scroll_step = max(1, size // 3)
+
                         for i, word in enumerate(agent_reponse.split()):
                             full_response += word + " "
                             placeholder.markdown(full_response)
 
-                            if i % (size/3) == 0:
+                            if i % scroll_step == 0:
                                 self.auto_scroll()  #scroll
                             time.sleep(0.05)
 

@@ -5,6 +5,9 @@ from streamlit_option_menu import option_menu
 from screens.chat import ChatPage
 from screens.uploads import UploadsPage
 
+from agents.expense_agent import ExpenseAgent
+from agents.config.settings import LLM_PROVIDER
+
 st.set_page_config(
     page_title="Financial Agents",
     page_icon="resources/assets/cash-coin.svg",
@@ -47,7 +50,17 @@ if selected == "Uploads":
     upload_page.render()
 
 if selected == "Planilha":
+    # APENAS PARA TESTE, DEVE SER ALTERADO
+    
     st.title(f"You have selected {selected}")
+    agent = ExpenseAgent(llm_provider=LLM_PROVIDER)
+    text = st.text_input("Gasto")
+
+    if text:
+        response = agent.agent_call(text)
+        st.warning(response)
+        st.warning(f"{response.data} - {response.valor} - {response.descricao} - {response.categoria}")
+
 
 if selected == "Dashboard":
     st.title(f"You have selected {selected}")

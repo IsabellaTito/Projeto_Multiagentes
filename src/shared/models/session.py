@@ -7,7 +7,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from shared.models import BaseModel
 
 if TYPE_CHECKING:
-    from shared.models import Message
+    from shared.models import Message, Expense
 
 
 class ChatSession(BaseModel):
@@ -17,6 +17,11 @@ class ChatSession(BaseModel):
     created_at: Mapped[datetime] = mapped_column(default=func.now())
 
     messages: Mapped[List["Message"]] = relationship(
+        back_populates="session",
+        cascade="all, delete-orphan"
+    )
+
+    expenses: Mapped[List["Expense"]] = relationship(
         back_populates="session",
         cascade="all, delete-orphan"
     )
