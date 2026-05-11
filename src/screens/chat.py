@@ -4,26 +4,35 @@ import streamlit as st
 
 from agents.chat_agent import ChatAgent
 from agents.config.settings import LLM_PROVIDER
-from shared.repository.session import ChatRepository
+from shared.repository import MessageRepository
 from shared.storage import get_db
 
 
 class ChatPage():
-    def __init__(self):
+    def __init__(self,session_id:int):
+        
         db = get_db()
-        self.chat_repository = ChatRepository(db)
-
-        session_id = self.chat_repository.get_session_by_id(1)
-
-        if session_id is None:
-            chat_session = self.chat_repository.create_session()
-            session_id = chat_session.id
+        self.message_repository = MessageRepository(db)
         
         if "session_id" not in st.session_state:
             st.session_state.session_id = session_id
 
         if "messages" not in st.session_state:
-            st.session_state.messages = self.chat_repository.get_messages_as_dict(st.session_state.session_id)
+            st.session_state.messages = self.message_repository.get_messages_as_dict(st.session_state.session_id)
+        
+        if not st.session_state.messages:
+            apresentacao ="""
+                    Olá, sou seu assistente financeiro pessoal! 💰
+
+                    Te ajudarei a organizar melhor seus gastos.
+                    
+                    Vamos começar os registros?  
+                    Basta me contar os gastos que organizarei tudo para você.
+                                    
+                """
+            
+            st.session_state.messages.append({"role": "assistant", "content": apresentacao})
+
 
         self.agent = ChatAgent(llm_provider=LLM_PROVIDER, session_id=session_id)
 
@@ -88,12 +97,12 @@ class ChatPage():
                 message = {"role": "assistant", "content": full_response}
                 st.session_state.messages.append(message)
 
-                self.chat_repository.create_message(
+                self.message_repository.create_message(
                     session_id=st.session_state.session_id, 
                     role=user_message["role"],
                     content=user_message["content"])
 
-                self.chat_repository.create_message(
+                self.message_repository.create_message(
                     session_id=st.session_state.session_id, 
                     role=message["role"],
                     content=message["content"])

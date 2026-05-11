@@ -1,12 +1,11 @@
 import streamlit as st
-from streamlit_extras.avatar import *
-from streamlit_option_menu import option_menu
 
-from screens.chat import ChatPage
-from screens.uploads import UploadsPage
+from screens import ChatPage, UploadsPage, SheetPage
 
 from agents.expense_agent import ExpenseAgent
 from agents.config.settings import LLM_PROVIDER
+
+from shared.utils import init_session, init_sidebar
 
 st.set_page_config(
     page_title="Financial Agents",
@@ -15,34 +14,12 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-with st.sidebar:
-    selected = option_menu(
-        menu_title="Financial Agents",
-        options=["Chat", "Uploads", "Planilha", "Dashboard"],
-        icons=["chat-right-text-fill", "file-earmark-arrow-up-fill", "table", "clipboard-data-fill"],
-        menu_icon="cash-coin",
-        default_index=0,
-        # orientation="horizontal",
-        key="selected",
-    )
+selected = init_sidebar()
 
-with st.sidebar:
-    avatar(
-        "https://github.com/IsabellaTito.png",
-        label="Isabella Tito",
-        caption="Creator",
-    )
-
-with st.sidebar:
-    avatar(
-        "https://github.com/Matheus256.png",
-        label="Matheus Nascimento",
-        caption="Creator",
-    )
-
+session = init_session()
 
 if selected == "Chat":
-    chat_page = ChatPage()
+    chat_page = ChatPage(session)
     chat_page.render()
 
 if selected == "Uploads":
@@ -50,16 +27,19 @@ if selected == "Uploads":
     upload_page.render()
 
 if selected == "Planilha":
-    # APENAS PARA TESTE, DEVE SER ALTERADO
-    
-    st.title(f"You have selected {selected}")
-    agent = ExpenseAgent(llm_provider=LLM_PROVIDER)
-    text = st.text_input("Gasto")
+    sheet_page = SheetPage(session)
+    sheet_page.render()
 
-    if text:
-        response = agent.agent_call(text)
-        st.warning(response)
-        st.warning(f"{response.data} - {response.valor} - {response.descricao} - {response.categoria}")
+
+#    st.title(f"You have selected {selected}")
+#    agent = ExpenseAgent(llm_provider=LLM_PROVIDER)
+#    text = st.text_input("Gasto")
+
+#    if text:
+#        response = agent.agent_call(text)
+#        st.warning(response)
+#        st.warning(f"{response.data} - {response.valor} - {response.descricao} - {response.categoria}")
+
 
 
 if selected == "Dashboard":
