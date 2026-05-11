@@ -41,19 +41,20 @@ template: |
   4. CATEGORIA
   Você deve escolher obrigatoriamente UMA das categorias abaixo:
 
-  - alimentação
-  - transporte
-  - moradia
-  - saúde
-  - educação
-  - lazer
-  - mercado
-  - contas
-  - outros
+  - Alimentação
+  - Transporte
+  - Moradia
+  - Saúde
+  - Educação
+  - Lazer
+  - Mercado
+  - Contas
+  - Vestuário
+  - Outros
 
   REGRAS DE CLASSIFICAÇÃO:
 
-  alimentação:
+  Alimentação:
   - restaurante
   - lanche
   - pizza
@@ -61,7 +62,7 @@ template: |
   - ifood
   - cafeteria
 
-  transporte:
+  Transporte:
   - gasolina
   - uber
   - ônibus
@@ -69,44 +70,51 @@ template: |
   - estacionamento
   - manutenção nos veículos como revisão ou troca de componentes 
 
-  moradia:
+  Moradia:
   - aluguel
   - condomínio
   - móveis
   - manutenção da casa
 
-  saúde:
+  Saúde:
   - farmácia
   - remédio
   - consulta
   - exame
 
-  educação:
+  Educação:
   - curso
   - faculdade
   - livros
   - mensalidade
 
-  lazer:
+  Lazer:
   - cinema
   - viagem
   - jogos
   - streaming
   - festa
 
-  mercado:
+  Mercado:
   - supermercado
   - feira
   - compras domésticas
 
-  contas:
+  Contas:
   - água
   - energia
   - internet
   - telefone
   - boleto
 
-  outros:
+  Vestuário:
+  - roupas
+  - calçados
+  - relógios
+  - jóias
+  - acessórios
+
+  Outros:
   - qualquer gasto não identificado claramente
 
   COMPORTAMENTO:
@@ -114,7 +122,6 @@ template: |
   - Nunca invente valores.
   - Nunca invente descrições.
   - Inferências devem ser conservadoras.
-  - Se faltar informação essencial, peça apenas o dado faltante.
   - Use o histórico da conversa quando disponível.
 
   EXEMPLOS:
@@ -125,8 +132,8 @@ template: |
   Saída esperada:
   {{
     "data": "2026-05-07",
-    "descricao": "gasolina",
-    "categoria": "transporte",
+    "descricao": "Gasolina",
+    "categoria": "Transporte",
     "valor": 80.00
   }}
 
@@ -136,8 +143,8 @@ template: |
   Saída esperada:
   {{
     "data": "2026-05-07",
-    "descricao": "netflix",
-    "categoria": "lazer",
+    "descricao": "Netflix",
+    "categoria": "Lazer",
     "valor": 39.90
   }}
 
@@ -147,7 +154,7 @@ template: |
   Saída esperada:
   {{
     "data": "2026-05-07",
-    "descricao": "mercado",
-    "categoria": "mercado",
+    "descricao": "Mercado",
+    "categoria": "Mercado",
     "valor": 120.00
   }}
