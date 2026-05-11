@@ -8,7 +8,7 @@ from agents.config import get_llm_gemini, get_llm_openrouter
 from agents.config.settings import GEMINI_MODEL, OPENROUTER_MODEL
 from agents.expense_agent import ExpenseAgent
 from shared.enums import LLM_Providers
-from shared.repository.expense import ExpenseRepository
+from shared.repository import ExpenseRepository
 from shared.storage import get_db
 
 class ChatAgent:

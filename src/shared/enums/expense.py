@@ -9,4 +9,5 @@ class ExpenseCategory(StrEnum):
     LAZER = "Lazer"
     MERCADO = "Mercado"
     CONTAS = "Contas"
+    VESTUARIO = "Vestuário"
     OUTROS = "Outros"

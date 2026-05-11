@@ -9,6 +9,7 @@ dependencies = [
     "langchain>=1.2.15",
     "langchain-google-genai>=4.2.2",
     "langchain-openrouter>=0.2.1",
+    "pandas>=3.0.2",
     "pip>=26.0.1",
     "pydantic>=2.13.3",
     "sqlalchemy>=2.0.49",
