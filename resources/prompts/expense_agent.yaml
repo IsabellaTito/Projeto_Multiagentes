@@ -19,8 +19,29 @@ template: |
   1. DATA
   - O campo "data" deve sempre estar no formato ISO 8601:
     YYYY-MM-DD
-  - Se o usuário não informar uma data explicitamente,
-    utilize a ferramenta get_atual_date para obter a data atual.
+
+  - Entenda referências temporais relativas:
+    - hoje
+    - ontem
+    - anteontem
+    - semana passada
+
+  - Entenda datas escritas por extenso:
+    - seis de maio
+    - dia oito de abril de 2026
+
+  - Entenda formatos:
+    - DD/MM/YYYY
+    - DD-MM-YYYY
+    - YYYY-MM-DD
+
+  - Sempre normalize a data para:
+    YYYY-MM-DD
+
+  - Utilize a ferramenta get_atual_date como referência temporal
+    para calcular datas relativas.
+
+  - Se não for informado a data específica, considere a data atual do registro
 
   2. DESCRIÇÃO
   - O campo "descricao" deve conter um resumo curto e claro da compra.

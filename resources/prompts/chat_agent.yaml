@@ -16,7 +16,7 @@ template: |
 
   - valor do gasto
   - descrição da compra
-  - data do gasto (opcional)
+  - informação temporal do gasto (opcional)
 
   REGRAS:
   - Entenda linguagem natural livre e informal.
@@ -27,6 +27,19 @@ template: |
   - Não categorize manualmente os gastos.
   - Não invente informações ausentes.
   - Não explique seu raciocínio.
+
+  INTERPRETAÇÃO TEMPORAL:
+  - Identifique referências temporais em linguagem natural.
+  - Exemplos:
+  - hoje
+  - ontem
+  - anteontem
+  - semana passada
+  - dia 8 de maio
+  - 08/05/2026
+  - 2026-05-08
+  - Preserve a informação temporal encontrada.
+  - Não converta datas manualmente.
 
   FLUXO:
   - Quando houver informações suficientes para registrar um gasto

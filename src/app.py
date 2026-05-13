@@ -1,46 +1,44 @@
 import streamlit as st
 
-from screens import ChatPage, UploadsPage, SheetPage
-
-from agents.expense_agent import ExpenseAgent
-from agents.config.settings import LLM_PROVIDER
-
+from screens import ChatPage, UploadsPage, SheetPage, LoginPage
 from shared.utils import init_session, init_sidebar
 
 st.set_page_config(
     page_title="Financial Agents",
     page_icon="resources/assets/cash-coin.svg",
     layout="wide",
-    initial_sidebar_state="collapsed"
+    initial_sidebar_state="expanded"
 )
 
-selected = init_sidebar()
+if "page_status" not in st.session_state:
+    st.session_state.page_status = "Not Logged"
 
-session = init_session()
+if st.session_state.page_status == "Logged":
 
-if selected == "Chat":
-    chat_page = ChatPage(session)
-    chat_page.render()
+    selected = init_sidebar()
 
-if selected == "Uploads":
-    upload_page = UploadsPage()
-    upload_page.render()
+    session = init_session()
 
-if selected == "Planilha":
-    sheet_page = SheetPage(session)
-    sheet_page.render()
+    if selected == "Chat":
+        chat_page = ChatPage(session)
+        chat_page.render()
 
+    elif selected == "Uploads":
+        upload_page = UploadsPage()
+        upload_page.render()
 
-#    st.title(f"You have selected {selected}")
-#    agent = ExpenseAgent(llm_provider=LLM_PROVIDER)
-#    text = st.text_input("Gasto")
+    elif selected == "Planilha":
+        sheet_page = SheetPage(session)
+        sheet_page.render()
 
-#    if text:
-#        response = agent.agent_call(text)
-#        st.warning(response)
-#        st.warning(f"{response.data} - {response.valor} - {response.descricao} - {response.categoria}")
+    elif selected == "Dashboard":
+        st.title(f"You have selected {selected}")
+    
+    elif selected == "Log Out":
+        st.session_state.page_status = "Not Logged"
+        st.rerun()
 
+else:
 
-
-if selected == "Dashboard":
-    st.title(f"You have selected {selected}")
+    login_page = LoginPage()
+    login_page.render()
