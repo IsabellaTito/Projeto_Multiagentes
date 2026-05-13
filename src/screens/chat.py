@@ -36,21 +36,11 @@ class ChatPage():
 
         self.agent = ChatAgent(llm_provider=LLM_PROVIDER, session_id=session_id)
 
-    # função JS de scroll
     @staticmethod
-    def auto_scroll():
-        st.markdown(
-            """
-            <script>
-            const doc = window.parent.document;
-            const main = doc.querySelector('section.main');
-            if (main) {
-                main.scrollTop = main.scrollHeight;
-            }
-            </script>
-            """,
-            unsafe_allow_html=True
-        )
+    def stream_message(message: str, delay: float = 0.05):
+        for word in message.split():
+            yield word + " "
+            time.sleep(delay)
 
     def render(self):
         chat_container = st.container(height="stretch", border=False, width="stretch")
@@ -74,27 +64,13 @@ class ChatPage():
                 with st.spinner(text="Pensando..."):
                     agent_reponse = self.agent.agent_call(st.session_state.messages[-10:])
 
-                # placeholder da resposta
+                # stream da resposta
                 with chat_container:
                     with st.chat_message("assistant"):
-                        placeholder = st.empty()
-
-                        full_response = ""
-
-                        # streaming fake
-                        size = len(agent_reponse.split())
-                        scroll_step = max(1, size // 3)
-
-                        for i, word in enumerate(agent_reponse.split()):
-                            full_response += word + " "
-                            placeholder.markdown(full_response)
-
-                            if i % scroll_step == 0:
-                                self.auto_scroll()  #scroll
-                            time.sleep(0.05)
+                        st.write_stream(self.stream_message(agent_reponse))
 
                 # salva resposta final
-                message = {"role": "assistant", "content": full_response}
+                message = {"role": "assistant", "content": agent_reponse}
                 st.session_state.messages.append(message)
 
                 self.message_repository.create_message(

@@ -51,7 +51,8 @@ class SheetPage():
                 column_config={
                     "Valor": st.column_config.NumberColumn(
                         "Valor",
-                        format="R$ %.2f"
+                        format="R$ %.2f",
+                        alignment="left"
                     )
                 }
             )
