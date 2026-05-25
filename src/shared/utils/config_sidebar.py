@@ -6,8 +6,8 @@ def init_sidebar():
     with st.sidebar:
         selected = option_menu(
             menu_title="Financial Agents",
-            options=["Chat", "Uploads", "Planilha", "Dashboard", "Log Out"],
-            icons=["chat-right-text-fill", "file-earmark-arrow-up-fill", "table", "clipboard-data-fill", "door-open-fill"],
+            options=["Chat", "Uploads", "Planilha", "Dashboard", "Agent's Logs", "Log Out"],
+            icons=["chat-right-text-fill", "file-earmark-arrow-up-fill", "table", "clipboard-data-fill", "terminal-fill", "door-open-fill"],
             menu_icon="cash-coin",
             default_index=0,
             # orientation="horizontal",
