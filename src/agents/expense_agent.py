@@ -4,7 +4,7 @@ from langchain.agents import create_agent
 from langchain_core.tools import tool
 from langchain_core.prompts import load_prompt
 
-from agents.config import get_llm_gemini, get_llm_openrouter
+from agents.config import get_llm_gemini, get_llm_openrouter, AgentLogger
 from agents.config.settings import GEMINI_MODEL, OPENROUTER_MODEL
 from shared.enums import LLM_Providers
 from shared.schemas import ExpenseSchema
@@ -16,7 +16,8 @@ class ExpenseAgent:
             self.llm = get_llm_gemini(model=GEMINI_MODEL, temperature=temperatura)
         elif llm_provider == LLM_Providers.OPENROUTER:
             self.llm = get_llm_openrouter(model=OPENROUTER_MODEL, temperature=temperatura)
-        
+
+        self._local_observer = AgentLogger()
         prompt = load_prompt("resources/prompts/expense_agent.yaml")
 
         self.agent = create_agent(
@@ -30,14 +31,19 @@ class ExpenseAgent:
 
     def agent_call(self, text: str) -> ExpenseSchema:
 
-        result = self.agent.invoke({
-            "messages": [
-                {
-                    "role": "user",
-                    "content": text
-                }
-            ]
-        })
+        result = self.agent.invoke(
+            {
+                "messages": [
+                    {
+                        "role": "user",
+                        "content": text
+                    }
+                ],
+            },
+            config={
+                "callbacks": [self._local_observer]
+            }
+        )
 
         final_text = self._extract_text(result["messages"][-1])
 
@@ -48,7 +54,12 @@ class ExpenseAgent:
             .strip()
         )
 
-        structured = self.extractor.invoke(final_text)
+        structured = self.extractor.invoke(
+            final_text,
+            config={
+                "callbacks": [self._local_observer]
+            }
+        )
 
         return structured
     
