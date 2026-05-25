@@ -1095,11 +1095,13 @@ dependencies = [
     { name = "langchain-openrouter" },
     { name = "pandas" },
     { name = "pip" },
+    { name = "plotly" },
     { name = "pydantic" },
     { name = "sqlalchemy" },
     { name = "streamlit" },
     { name = "streamlit-extras" },
     { name = "streamlit-option-menu" },
+    { name = "tailer" },
 ]
 
 [package.metadata]
@@ -1110,11 +1112,13 @@ requires-dist = [
     { name = "langchain-openrouter", specifier = ">=0.2.1" },
     { name = "pandas", specifier = ">=3.0.2" },
     { name = "pip", specifier = ">=26.0.1" },
+    { name = "plotly", specifier = ">=6.7.0" },
     { name = "pydantic", specifier = ">=2.13.3" },
     { name = "sqlalchemy", specifier = ">=2.0.49" },
     { name = "streamlit", specifier = ">=1.56.0" },
     { name = "streamlit-extras", specifier = ">=1.4.1" },
     { name = "streamlit-option-menu", specifier = ">=0.4.0" },
+    { name = "tailer", specifier = ">=0.4.1" },
 ]
 
 [[package]]
@@ -1623,6 +1627,12 @@ sdist = { url = "https://files.pythonhosted.org/packages/5e/27/72dc451cdaef1714f
 wheels = [
     { url = "https://files.pythonhosted.org/packages/fd/52/2f525ad4262dc83d67297f69ec5afcee1438b9e9ae22aa318396725ddbed/streamlit_option_menu-0.4.0-py3-none-any.whl", hash = "sha256:a55fc7554047b6db371595af2182e435b8a2c715ee6124e8543685bd4670b07e", size = 829255, upload-time = "2024-10-09T14:50:59.707Z" },
 ]
+
+[[package]]
+name = "tailer"
+version = "0.4.1"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/dd/05/01de24d6393d6da0c27857c76b0f9ae97b42cd6102bbdf76cce95e031295/tailer-0.4.1.tar.gz", hash = "sha256:78d60f23a1b8a2d32f400b3c8c06b01142ac7841b75d8a1efcb33515877ba531", size = 7504, upload-time = "2015-12-09T19:44:11.428Z" }
 
 [[package]]
 name = "tenacity"
