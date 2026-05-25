@@ -4,7 +4,7 @@ from langchain.agents import create_agent
 from langchain_core.tools import tool
 from langchain_core.prompts import load_prompt
 
-from agents.config import get_llm_gemini, get_llm_openrouter
+from agents.config import get_llm_gemini, get_llm_openrouter, AgentLogger
 from agents.config.settings import GEMINI_MODEL, OPENROUTER_MODEL
 from agents.expense_agent import ExpenseAgent
 from shared.enums import LLM_Providers
@@ -24,6 +24,7 @@ class ChatAgent:
         db = get_db()
         self.expense_repository = ExpenseRepository(db)
         
+        self._local_observer = AgentLogger()
         prompt = load_prompt("resources/prompts/chat_agent.yaml")
 
         @tool
@@ -84,6 +85,9 @@ class ChatAgent:
         result = self.agent.invoke(
             {
                 "messages": messages
+            },
+            config={
+                "callbacks": [self._local_observer]
             }
         )
 
