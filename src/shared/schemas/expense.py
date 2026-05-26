@@ -22,3 +22,8 @@ class ExpenseSchema(BaseModel):
     valor: Decimal = Field(
         description="Valor do gasto"
     )
+
+class DocsExtractionSchema(BaseModel):
+    despesas: list[ExpenseSchema]
+    observacao: str | None=None
+    confidence: float
