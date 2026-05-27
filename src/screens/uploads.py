@@ -19,7 +19,7 @@ class UploadsPage:
 
         if upload_file:
 
-            if st.button("Processar"):
+            if st.button("Processar", type="primary"):
 
                 documento = [UploadedDocument(
                         filename=file.name,
