@@ -24,7 +24,7 @@ if st.session_state.page_status == "Logged":
         chat_page.render()
 
     elif selected == "Uploads":
-        upload_page = UploadsPage()
+        upload_page = UploadsPage(session)
         upload_page.render()
 
     elif selected == "Planilha":
