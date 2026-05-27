@@ -76,6 +76,22 @@ sequenceDiagram
 ````
 ---
 
+## Sprint 3 (26/05/2026) 🚀
+
+Nessa terceira sprint, nosso sistema foi aprimorado para receber os gastos não apenas via conversa com o `ChatAgent`, mas também para receber via upload de arquivos. Na aba `uploads`, o usuário pode enviar notas fiscais, recibos, comprovantes, boletos, faturas, entre outros documentos que serão lidos e terão seus dados extraídos pelo novo agente, `DocReaderAgent`. Esse agente extrai os gastos dos documentos enviados de maneira estruturada e persiste esse dados na tabela de gastos. 
+
+Além desse novo agente, foi criada a página de `Dashboard`. A página exibe gráficos com estátisticas dos gastos já enviados pelo usuário, para que ele possa ter um panorama geral dos seus hábitos financeiros, em qual categoria possui mais gastos, quais as suas tendências, entre outros insights interessantes.
+
+Para finalizar essa entrega, ainda foi criada uma classe que herda de `BaseCallbackHandler` para registrar os callbacks, evidenciando as chamadas aos modelos, o uso de `tools` e as atividades dos agentes, permitindo que exista observabilidade no sistema, tudo registrado em um arquivo `.log`.
+
+### Features desta sprint
+
+- Criação do `DocReaderAgent` que lê os arquivos enviados via upload e registra os gastos identificados na planilha
+- Criação da página de `Dashboard` com gráficos e estátisticas interessantes sobre os padrões de gastos do usuário
+- Observalidade do sistema com a criação de um `log` para ter maior controle sobre as ações dos agentes e dos modelos, facilitando a auditoria dos eventos e a detecção de bugs.
+  
+---
+
 ## Como rodar? ⚙️
 
 Inicie o projeto com o comando:
