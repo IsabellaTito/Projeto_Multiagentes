@@ -9,12 +9,12 @@ from shared.storage import get_db
 class UploadsPage:
     def __init__(self,session_id:int):
         self.session_id = session_id
-        self.agente =  DocReaderAgent(session_id=session_id)
+        self.agente = DocReaderAgent()
         db = get_db()
         self.expense_repository = ExpenseRepository(db)
 
     def render(self):
-        st.title(f"You have selected {st.session_state['selected']}")
+        st.title(f"Upload de Arquivos")
         upload_file = st.file_uploader(label="Envie os arquivos", accept_multiple_files=True, type=["pdf", "png", "jpg", "jpeg"])
 
         if upload_file:
