@@ -8,10 +8,9 @@ from shared.schemas.expense import DocsExtractionSchema
 from shared.utils.docs_preprocessor import DocumentPreprocessor
 
 class DocReaderAgent:
-    def __init__(self, temperatura:float = 0, session_id: int = None):
+    def __init__(self, temperatura:float = 0):
         self.llm = get_llm_gemini(model=GEMINI_MODEL,temperature=temperatura)
         #self.llm = get_llm_openrouter(model=DOC_READER_MODEL, temperature=temperatura)
-        self.session_id = session_id
         self._local_observer = AgentLogger()
 
         self.prompt = load_prompt("resources/prompts/doc_reader_agent.yaml").format()
