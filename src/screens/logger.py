@@ -11,9 +11,9 @@ class LogsPage:
         log_placeholder = st.empty()
 
         # Botão para atualizar a visualização manualmente
-        if st.button("Atualizar Logs"):
+        if st.button("Atualizar Logs", type="primary"):
             # Tente usar encoding='utf-8' com errors='replace' ou 'ignore'
             with open(self._arquivo_log, 'r', encoding='utf-8', errors='replace') as f:
-                ultimas_linhas = tailer.tail(f, 50)
+                ultimas_linhas = tailer.tail(f, 200)
                 conteudo = "\n".join(ultimas_linhas)
                 log_placeholder.code(conteudo)
