@@ -129,7 +129,7 @@ class DashboardPage:
                 }
             )
 
-            st.plotly_chart(fig1, width='stretch')
+            st.container(border=True).plotly_chart(fig1, width='stretch')
 
         # --------------------------------------------------
         # DISTRIBUIÇÃO DOS GASTOS
@@ -152,7 +152,7 @@ class DashboardPage:
                 title=""
             )
 
-            st.plotly_chart(fig2, width='stretch')
+            st.container(border=True).plotly_chart(fig2, width='stretch')
 
         # ==================================================
         # EVOLUÇÃO DOS GASTOS
@@ -178,7 +178,7 @@ class DashboardPage:
             }
         )
 
-        st.plotly_chart(
+        st.container(border=True).plotly_chart(
             fig3,
             width='stretch'
         )
@@ -207,12 +207,10 @@ class DashboardPage:
             }
         )
 
-        st.plotly_chart(
+        st.container(border=True).plotly_chart(
             fig4,
             width='stretch'
         )
-
-        st.divider()
 
         # ==================================================
         # MAIORES GASTOS
