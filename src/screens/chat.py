@@ -46,8 +46,15 @@ class ChatPage():
             yield word + " "
             time.sleep(delay)
 
+    def persist_message(self, message_dict: dict):
+        self.message_repository.create_message(
+            session_id=st.session_state.session_id, 
+            role=message_dict["role"],
+            content=message_dict["content"]
+        )
+
     def render(self):
-        chat_container = st.container(height="stretch", border=False, width="stretch")
+        chat_container = st.container(height="stretch", border=False, width="stretch", autoscroll=True)
 
         with chat_container:
             for msg in st.session_state.messages:
@@ -58,6 +65,18 @@ class ChatPage():
         if prompt := st.chat_input("Digite algo", accept_file=True):
             if prompt.files:
                 try:
+                    user_message_content = ""
+                    for file in prompt.files:
+                        user_message_content += f"📄{file.name} \n"
+                    
+                    user_message = {"role": "user", "content": user_message_content}
+                    st.session_state.messages.append(user_message)
+                    self.persist_message(message_dict=user_message)
+
+                    with chat_container:
+                        with st.chat_message("user"):
+                            st.write(user_message_content)
+
                     with st.spinner(text="Processando..."):
                         documento = [UploadedDocument(
                                 filename=file.name,
@@ -67,8 +86,8 @@ class ChatPage():
                             for file in prompt.files
                         ]
                         
-                        response = self.doc_agent.extractor(documento)
-                        st.success("Dados extraidos com sucesso")
+                        response = self.doc_agent.extractor(documento)                      
+                        message_content = "Gastos extraídos do documento:\n"
 
                         for indice, despesa in enumerate(response.despesas, start=1):
                             self.expense_repository.create_expense(
@@ -78,9 +97,24 @@ class ChatPage():
                                 categoria=despesa.categoria,
                                 valor=despesa.valor,
                             )
+                            message_content += f"- R$ {despesa.valor} em {despesa.descricao} ({despesa.data}) - categoria {despesa.categoria} \n"
+
+                        with chat_container:
+                            with st.chat_message("assistant"):
+                                st.write_stream(self.stream_message(message_content))
+                        
+                        message = {"role": "assistant", "content": message_content}
+                        st.session_state.messages.append(message)
+
+                        self.persist_message(message_dict=message)
 
                 except Exception as e:
-                    st.error(f"Erro inesperado: {e}")
+                    st.toast(f"Erro inesperado: {e}", icon=":material/error:", duration="long")
+                    error_reponse = "Ocorreu um erro inesperado ao processar o documento"
+                    with chat_container:
+                        with st.chat_message("assistant"):
+                            st.write_stream(self.stream_message(error_reponse))
+
             else:
                 try:
                     # adiciona user
@@ -103,15 +137,8 @@ class ChatPage():
                     message = {"role": "assistant", "content": agent_reponse}
                     st.session_state.messages.append(message)
 
-                    self.message_repository.create_message(
-                        session_id=st.session_state.session_id, 
-                        role=user_message["role"],
-                        content=user_message["content"])
-
-                    self.message_repository.create_message(
-                        session_id=st.session_state.session_id, 
-                        role=message["role"],
-                        content=message["content"])
+                    self.persist_message(message_dict=user_message)
+                    self.persist_message(message_dict=message)
                     
                 except Exception as e:
                     st.error(f"Erro inesperado: {e}")
