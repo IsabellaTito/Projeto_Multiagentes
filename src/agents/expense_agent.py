@@ -22,7 +22,7 @@ class ExpenseAgent:
 
         self.agent = create_agent(
             model = self.llm,
-            tools=[self.get_atual_date],
+            tools=[ExpenseAgent.get_atual_date],
             system_prompt=prompt.format(),
             #response_format=ExpenseSchema,
         )
