@@ -29,56 +29,6 @@ class ChatAgent:
         prompt = load_prompt("resources/prompts/chat_agent.yaml")
 
         @tool
-        def get_expenses(description: str | None = None, expense_date: date | None = None):
-            """
-            Consulta despesas previamente registradas pelo usuário.
-
-            Utilize esta ferramenta quando o usuário fizer perguntas sobre
-            gastos já cadastrados, como consultas, buscas ou verificações.
-
-            IMPORTANTE:
-            - Pelo menos um dos filtros (description ou date) deve ser informado.
-            - Nunca chame esta ferramenta sem fornecer ao menos um filtro.
-            - Quando não houver informação suficiente para definir um filtro,
-            solicite mais detalhes ao usuário.
-
-            Exemplos de uso:
-            - "Quanto gastei com gasolina?"
-            - "Mostre minhas despesas de ontem."
-            - "Eu já registrei mercado este mês?"
-            - "Quais foram meus gastos na terça-feira?"
-            - "Procure despesas relacionadas a Uber."
-
-            Filtros disponíveis:
-            - description:
-            Texto utilizado para localizar despesas cuja descrição
-            contenha o termo informado.
-
-            - date:
-            Data exata da despesa no formato YYYY-MM-DD.
-
-            Observações:
-            - Os filtros são opcionais individualmente, mas pelo menos um deles
-            deve ser informado.
-            - Quando mais de um filtro for informado, eles serão combinados.
-            - A consulta é limitada à sessão atual do usuário.
-
-            Returns:
-                Lista de despesas encontradas contendo:
-                - data
-                - descricao
-                - categoria
-                - valor
-            """
-            result= self.expense_repository.get_expenses(
-                session_id=self.session_id,
-                descricao=description,
-                data=expense_date,
-            )
-
-            return result
-
-        @tool
         def call_expense_agent(expense: str) -> str:
             """
             Processa uma despesa informada em linguagem natural.
@@ -129,15 +79,8 @@ class ChatAgent:
         self.agent = create_agent(
             model=self.llm,
             system_prompt=prompt.format(),
-            tools=[call_expense_agent, ChatAgent.get_today_date, get_expenses],
+            tools=[call_expense_agent],
         )
-
-    @staticmethod
-    @tool
-    def get_today_date() -> str:
-        """Retorna a data atual do sistema."""
-        now = date.today()
-        return now.strftime("%Y-%m-%d")
 
     def agent_call(self, messages: list) -> str:
         result = self.agent.invoke(
