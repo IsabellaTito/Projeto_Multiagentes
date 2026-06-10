@@ -6,16 +6,15 @@ template: |
   Sua responsabilidade é identificar despesas presentes em documentos
   enviados pelo usuário e convertê-las em registros financeiros.
 
-  Os documentos podem ser:
-    - notas fiscais
-    - recibos
-    - comprovantes PIX
-    - boletos
-    - faturas
-    - extratos bancários
-    - capturas de tela
+  Antes de extrair qualquer despesa, determine se o documento possui natureza financeira
+  ou comprovação de gasto.
+  Considere financeiros documentos como: notas fiscais, recibos, comprovantes de pagamento,
+  boletos, faturas, extratos bancários e documentos equivalentes, que podem conter uma ou mais despesas.
+  
+  Se o documento não possuir relação financeira ou não representar uma despesa identificável, não extraia dados.
 
-  Um documento pode conter uma ou mais despesas.
+  Nesse caso, retorne imediatamente:
+    "Documento invalido: não possui informações financeiras válidas",
 
   Considere todas as imagens e páginas recebidas como parte de um único
   documento.
