@@ -71,7 +71,6 @@ class ChatPage():
                     
                     user_message = {"role": "user", "content": user_message_content}
                     st.session_state.messages.append(user_message)
-                    self.persist_message(message_dict=user_message)
 
                     with chat_container:
                         with st.chat_message("user"):
@@ -88,6 +87,9 @@ class ChatPage():
                         
                         response = self.doc_agent.extractor(documento)                      
                         message_content = "Gastos extraídos do documento:\n"
+
+                        if not response.despesas:
+                            message_content = "Nenhum gasto encontrado"
 
                         for indice, despesa in enumerate(response.despesas, start=1):
                             self.expense_repository.create_expense(
@@ -106,6 +108,7 @@ class ChatPage():
                         message = {"role": "assistant", "content": message_content}
                         st.session_state.messages.append(message)
 
+                        self.persist_message(message_dict=user_message)
                         self.persist_message(message_dict=message)
 
                 except Exception as e:
@@ -141,5 +144,9 @@ class ChatPage():
                     self.persist_message(message_dict=message)
                     
                 except Exception as e:
-                    st.error(f"Erro inesperado: {e}")
+                    st.toast(f"Erro inesperado: {e}", icon=":material/error:", duration="long")
+                    error_reponse = "Ocorreu um erro inesperado ao processar o documento"
+                    with chat_container:
+                        with st.chat_message("assistant"):
+                            st.write_stream(self.stream_message(error_reponse))
 

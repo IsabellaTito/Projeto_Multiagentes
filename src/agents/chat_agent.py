@@ -1,8 +1,6 @@
-from datetime import date
-
-import streamlit as st
 from langchain.agents import create_agent
 from langchain_core.tools import tool
+from langchain_core.messages import convert_to_messages
 from langchain_core.prompts import load_prompt
 
 from agents.config import get_llm_gemini, get_llm_openrouter, AgentLogger
@@ -83,9 +81,10 @@ class ChatAgent:
         )
 
     def agent_call(self, messages: list) -> str:
+        formatted_messages = convert_to_messages(messages)
         result = self.agent.invoke(
             {
-                "messages": messages
+                "messages": formatted_messages
             },
             config={
                 "callbacks": [self._local_observer]
