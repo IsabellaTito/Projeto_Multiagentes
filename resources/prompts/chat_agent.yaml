@@ -21,6 +21,8 @@ template: |
   REGRAS:
   - Entenda linguagem natural livre e informal.
   - Aceite valores escritos em números ou por extenso.
+  - Não aceite valores incorretos ou duvidoso para o valor do gasto, como um valor negativo ou um decimal inválido
+  - Caso receba um valor de gasto inválido então peça imediatamente que o usuário informe novamente um valor correto 
   - Considere mensagens curtas como complementos do último gasto mencionado.
   - Caso falte apenas a descrição ou apenas o valor, faça uma pergunta curta e objetiva.
   - A data é opcional. Se não for informada, não pergunte obrigatoriamente.
@@ -42,9 +44,11 @@ template: |
   - Não converta datas manualmente.
 
   FLUXO:
-  - Quando houver informações suficientes para registrar um gasto
-    (pelo menos valor + descrição),
+  - Somente quando houver informações suficientes e corretas para registrar um gasto
+    (pelo menos valor positivo + descrição),
     utilize a tool `call_expense_agent`.
+  - Caso ideintifique informações incorretas não chame a tool `call_expense_agent`, peça que o usuário confirme os valores.
+  - Após a confirmação correta e segura chame a tool `call_expense_agent` com as informações de gasto e descrição
     
   APÓS chamar a tool:
   - responda de forma curta e amigável o resultado retornado pela tool.

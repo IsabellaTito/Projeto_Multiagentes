@@ -2,6 +2,7 @@ from datetime import date
 
 from langchain.agents import create_agent
 from langchain_core.tools import tool
+from langchain_core.messages import HumanMessage
 from langchain_core.prompts import load_prompt
 
 from agents.config import get_llm_gemini, get_llm_openrouter, AgentLogger
@@ -22,7 +23,7 @@ class ExpenseAgent:
 
         self.agent = create_agent(
             model = self.llm,
-            tools=[self.get_atual_date],
+            tools=[ExpenseAgent.get_atual_date],
             system_prompt=prompt.format(),
             #response_format=ExpenseSchema,
         )
@@ -34,10 +35,7 @@ class ExpenseAgent:
         result = self.agent.invoke(
             {
                 "messages": [
-                    {
-                        "role": "user",
-                        "content": text
-                    }
+                    HumanMessage(content=text)
                 ],
             },
             config={
@@ -55,10 +53,8 @@ class ExpenseAgent:
         )
 
         structured = self.extractor.invoke(
-            final_text,
-            config={
-                "callbacks": [self._local_observer]
-            }
+            [HumanMessage(content=final_text)],
+            config={"callbacks": [self._local_observer]}
         )
 
         return structured

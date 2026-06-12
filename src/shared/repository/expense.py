@@ -115,4 +115,41 @@ class ExpenseRepository:
                 }
                 for expense in expenses
             ]
-        
+
+    def get_expenses(
+        self,
+        *,
+        session_id: int,
+        data: date | None = None,
+        descricao: str | None = None,
+        categoria: ExpenseCategory | None = None,
+    ) -> list[Expense]:
+        with self.db.session_scope() as session:
+            query = session.query(Expense)
+            query = query.filter(Expense.session_id == session_id)
+
+            if data is not None:
+                query = query.filter(Expense.data == data)
+
+            if descricao:
+                query = query.filter(Expense.descricao.ilike(f"%{descricao}%"))
+
+            if categoria is not None:
+                query = query.filter(Expense.categoria == categoria.value)
+
+            expenses = (
+                query
+                .order_by(Expense.data.desc())
+                .all()
+            )
+
+            return [
+            {
+                "id": e.id,
+                "data": e.data.isoformat(),
+                "descricao": e.descricao,
+                "categoria": e.categoria,
+                "valor": float(e.valor),
+            }
+            for e in expenses
+        ]
